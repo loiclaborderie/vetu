@@ -28,7 +28,8 @@
       <th scope="row">{{ todo.id }}</th>
       <td>{{ todo.task }}</td>
       <td>{{ todo.description }}</td>
-      <td><input type='checkbox' {{todo.completed ? "checked" : ""}} ></td>
+     <td><input onchange="window.location.href='{{ path("app.todo.patch.completed", {'id': todo.id}) }}'" type="checkbox" {{ todo.completed == false ? "" : "checked"}}></td>
+      <td> <a class="btn btn-danger" href="{{ path('app.todo.suppr',{'id': todo.id}) }}">Supprimer</a> </td>
     </tr>
   </tbody>
 </table>

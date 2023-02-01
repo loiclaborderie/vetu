@@ -29,7 +29,7 @@ class TodoController extends AbstractController
         ]);
     }
     
-    #[Route('detail/{id}', name: 'app.todo.detail', methods: 'GET')]
+    #[Route('/detail/{id}', name: 'app.todo.detail', methods: 'GET')]
     public function detail(Request $request, int $id) : Response{
         $session = $request->getSession();
     
@@ -51,10 +51,40 @@ class TodoController extends AbstractController
         }
     
 
-        // definir route supprseion tache
-        // definir button suppr
-        // envoyer id a suppr dans la route
-        // parcourir todolist et suppr le todo avec les id
+        #[Route('/suppr/{id}', name: 'app.todo.suppr', methods: 'GET')]
+
+        public function delete(Request $request, int $id){
+            $session = $request->getSession();
+        
+            $todolist = $session->get('todolist');
+            foreach($todolist as $key => $todo){
+                if($todo->id === $id){
+                    unset($todolist[$key]);
+                }
+            }
+
+            $session->set('todolist', $todolist);
+
+            return $this->redirect('/todo');
+
+            }
+
+
+        #[Route('/patch/complete/{id}', name:'app.todo.patch.completed', methods:'GET')]
+        public function patchCompleted(Request $request, int $id):Response{
+
+            $session = $request->getSession();
+        
+            $todolist = $session->get('todolist');
+
+            foreach($todolist as $todo){
+                if($todo->id === $id){
+                    $todo->completed = !$todo->completed;
+                }
+            }
+            $session->set('todolist', $todolist);
+            return $this->redirect("/todo");
+        }
 
 
         private function init():array{

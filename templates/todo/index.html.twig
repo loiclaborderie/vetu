@@ -13,6 +13,7 @@
       <th scope="col">Task</th>
       <th scope="col">State</th>
       <th scope="col"></th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -20,8 +21,12 @@
     <tr>
       <th scope="row">{{ todo.id }}</th>
       <td>{{ todo.task }}</td>
-      <td><input type='checkbox' {{todo.completed ? "checked" : ""}} ></td>
-      <td> <a class="btn btn-info" href="{{ path('app.todo.detail',{'id': todo.id}) }}">Détail</a> </td>
+      <td><input onchange="window.location.href='{{ path("app.todo.patch.completed", {'id': todo.id}) }}'" type="checkbox" {{ todo.completed == false ? "" : "checked"}}></td>
+      <td>
+          <a href="{{ path('app.todo.detail', {'id': todo.id}) }}" class="btn btn-info"> détail </a>
+          <a href="{{ path('app.todo.suppr', {'id': todo.id}) }}" class="btn btn-danger"> X </a>
+      </td>
+
     </tr>
     {% endfor %}
   </tbody>
