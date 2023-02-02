@@ -15,7 +15,7 @@ class FilmType extends AbstractType
             ->add('titre')
             ->add('description')
             ->add('date_de_sortie', null, [
-                'format' => 'ddMMMyyyy',
+                'format' => 'dd MMM yyyy',
                 'years'=> range(1930, 2023)
             ])
             ->add('duree')

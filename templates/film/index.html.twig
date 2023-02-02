@@ -3,12 +3,11 @@
 {% block title %}Film index{% endblock %}
 
 {% block body %}
-    <h1>Film index</h1>
+    <h1 class='text-center mt-3'>Films à l'affiche</h1>
 
-    <table class="table">
+    {# <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Titre</th>
                 <th>Description</th>
                 <th>Date_de_sortie</th>
@@ -20,7 +19,6 @@
         <tbody>
         {% for film in films %}
             <tr>
-                <td>{{ film.id }}</td>
                 <td>{{ film.titre }}</td>
                 <td>{{ film.description }}</td>
                 <td>{{ film.dateDeSortie ? film.dateDeSortie|date('Y-m-d') : '' }}</td>
@@ -37,7 +35,24 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
+    </table> #}
+   <div class="container mt-5">
+        <div class="row mt-5 gx-4 gy-3">
+   {% for item in films %}
+    <div class="col-sm-6 col-md-4 col-lg-3">
+    <div class="card" style="max-width: 18rem;">
+        <a href="{{ path('app_film_show', {'id': item.id}) }}">
+            <img style="aspect-ratio: 16/9; object-fit:cover;" src="{{item.image}}" class="card-img-top" alt="film image">
+        </a>
+        <div class="card-body text-center">
+            <h5 class="card-title">{{item.titre}}</h5>
+            <a href="{{ path('app_film_show', {'id': item.id}) }}" class="btn btn-dark">Voir</a>
+            <a href="{{ path('app_film_edit', {'id': item.id}) }}" class="btn btn-primary">Editer</a>
+        </div>
+    </div>
+    </div>
+    {% endfor %}
+    </div>
 
     <a href="{{ path('app_film_new') }}">Create new</a>
 {% endblock %}

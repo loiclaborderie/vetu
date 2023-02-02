@@ -28,11 +28,13 @@ class FilmController extends AbstractController
         $form = $this->createForm(FilmType::class, $film);
 
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            $filmRepository->save($film, true);
-
-            return $this->redirectToRoute('app_film_index', [], Response::HTTP_SEE_OTHER);
+            try {
+                $filmRepository->save($film, true);
+                return $this->redirectToRoute('app_film_index', [], Response::HTTP_SEE_OTHER);
+            } catch (\Exception $e) {
+                $this->addFlash('error', "le formulaire n'est pas valide");
+            }
         }
 
         return $this->render('film/new.html.twig', [

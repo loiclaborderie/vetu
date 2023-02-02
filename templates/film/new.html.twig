@@ -3,6 +3,13 @@
 {% block title %}New Film{% endblock %}
 
 {% block body %}
+  {% for flash in app.flashes('error') %}
+    <div class="alert alert-danger">
+      {{flash}}
+    </div>
+
+  {% endfor %}
+
     <h1>Create new Film</h1>
 
     {{ include('film/_form.html.twig') }}

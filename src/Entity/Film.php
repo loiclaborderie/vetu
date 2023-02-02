@@ -34,10 +34,10 @@ class Film
     #[ORM\ManyToOne(inversedBy: 'film')]
     private ?Realisateur $realisateur = null;
 
-    #[ORM\ManyToMany(targetEntity: Genre::class, mappedBy: 'film')]
+    #[ORM\ManyToMany(targetEntity: Genre::class, mappedBy: 'film', cascade:["persist"])]
     private Collection $genres;
 
-    #[ORM\ManyToMany(targetEntity: Acteur::class, mappedBy: 'film')]
+    #[ORM\ManyToMany(targetEntity: Acteur::class, mappedBy: 'film', cascade:["persist"])]
     private Collection $acteurs;
 
     public function __construct()

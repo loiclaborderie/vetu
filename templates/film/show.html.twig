@@ -1,42 +1,53 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Film{% endblock %}
+{% block title %}Film
+{% endblock %}
 
 {% block body %}
-    <h1>Film</h1>
+	<h1 class="text-center">Film</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ film.id }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ film.titre }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ film.description }}</td>
-            </tr>
-            <tr>
-                <th>Date_de_sortie</th>
-                <td>{{ film.dateDeSortie ? film.dateDeSortie|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Duree</th>
-                <td>{{ film.duree ? film.duree|date('H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ film.image }}</td>
-            </tr>
-        </tbody>
-    </table>
+	{# <table class="table">
+																								        <tbody>
+																								            <tr>
+																								                <th>Id</th>
+																								                <td>{{ film.id }}</td>
+																								            </tr>
+																								            <tr>
+																								                <th>Titre</th>
+																								                <td>{{ film.titre }}</td>
+																								            </tr>
+																								            <tr>
+																								                <th>Description</th>
+																								                <td>{{ film.description }}</td>
+																								            </tr>
+																								            <tr>
+																								                <th>Date_de_sortie</th>
+																								                <td>{{ film.dateDeSortie ? film.dateDeSortie|date('Y-m-d') : '' }}</td>
+																								            </tr>
+																								            <tr>
+																								                <th>Duree</th>
+																								                <td>{{ film.duree ? film.duree|date('H:i:s') : '' }}</td>
+																								            </tr>
+																								            <tr>
+																								                <th>Image</th>
+																								                <td><img src="{{ film.image }}" alt="affiche film"></td>
+																								            </tr>
+																								        </tbody>
+																								    </table> #}
+	<div class="container mt-5 d-flex flex-column justify-content-center align-items-center">
+		<div class="card" style="max-width:750px;width:100%">
+			<div class="card-body text-center">
+				<h5 class="card-title">{{film.titre}}</h5>
+				<p class="card-title">Description :
+					{{film.description}}</p>
+				<div class="d-flex justify-content-around" style="width:50%; margin:0 auto">
+					<a href="{{ path('app_film_edit', {'id': film.id}) }}" class="btn btn-primary">Editer</a>
+					{{ include('film/_delete_form.html.twig') }}
+				</div>
+			</div>
+			<a href="{{ path('app_film_show', {'id': film.id}) }}">
+				<img style="aspect-ratio: 16/9; object-fit:cover;" src="{{film.image}}" class="card-img-top" alt="film image">
+			</a>
+		</div>
 
-    <a href="{{ path('app_film_index') }}">back to list</a>
-
-    <a href="{{ path('app_film_edit', {'id': film.id}) }}">edit</a>
-
-    {{ include('film/_delete_form.html.twig') }}
-{% endblock %}
+	{% endblock %}
