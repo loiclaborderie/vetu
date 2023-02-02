@@ -1,0 +1,24 @@
+
+<div class='container'>
+{{ form_start(form) }}
+    {# {{ form_widget(form) }} #}
+
+    <div class="row">
+        <div class="col-6">
+            {{form_row(form.titre)}}
+        </div>
+        <div class="col-6">
+            {{form_row(form.description)}}
+        </div>
+    </div>
+
+    {# <select multiple class="form-select">
+        {% for item in form_row(form.genres)%}
+        <option value="{{item}}">{{item}}</option>
+        {% endfor %}
+    </select> #}
+
+    {{form_rest(form)}}
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+</div>
