@@ -21,7 +21,7 @@ class Acteur
     #[ORM\Column(length: 150)]
     private ?string $prenom = null;
 
-    #[ORM\ManyToMany(targetEntity: Film::class, inversedBy: 'acteurs')]
+    #[ORM\ManyToMany(targetEntity: Film::class, mappedBy: 'acteurs')]
     private Collection $film;
 
     public function __construct()

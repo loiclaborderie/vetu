@@ -18,7 +18,7 @@ class Genre
     #[ORM\Column(length: 50)]
     private ?string $type = null;
 
-    #[ORM\ManyToMany(targetEntity: Film::class, inversedBy: 'genres')]
+    #[ORM\ManyToMany(targetEntity: Film::class, mappedBy: 'genres')]
     private Collection $film;
 
     public function __construct()
