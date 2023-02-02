@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Acteur;
 use App\Entity\Film;
+use App\Entity\Genre;
 use App\Form\FilmType;
 use App\Repository\FilmRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,24 +26,58 @@ class FilmController extends AbstractController
     #[Route('/new', name: 'app_film_new', methods: ['GET', 'POST'])]
     public function new(Request $request, FilmRepository $filmRepository): Response
     {
-        $film = new Film();
-        $form = $this->createForm(FilmType::class, $film);
+       // on instancie un objet de type film
+       $film = new Film();
+       // on crée le formulaire en allant chercher le builder dans le dossier form et en l'associant à l'objet precedent
+       $form = $this->createForm(FilmType::class, $film);
+       // on récupère le formulaire
+       $form->handleRequest($request);
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            try {
-                $filmRepository->save($film, true);
-                return $this->redirectToRoute('app_film_index', [], Response::HTTP_SEE_OTHER);
-            } catch (\Exception $e) {
-                $this->addFlash('error', "le formulaire n'est pas valide");
-            }
-        }
+       // dans le cas ou le formulaire est soumis et valide
+       if ($form->isSubmitted() && $form->isValid()) {
 
-        return $this->render('film/new.html.twig', [
-            'film' => $film,
-            'form' => $form,
-        ]);
-    }
+           // dans le cas ou il n'y a pas d'exception levées
+           try {
+               // on récupère les données du formulaire
+               $data = $form->getData();
+
+               // on parcourt la collection Acteurs
+               foreach ($data->getActeurs() as $item) {
+                   // on instancie un objet Acteur
+                   $acteur = new Acteur();
+                   // on lui soumet des valeurs depuis le formulaire
+                   $acteur->setPrenom($item->getPrenom());
+                   $acteur->setNom($item->getNom());
+                   // on ajoute l'acteur à l'entité film (pour le many to many)
+                   $film->addActeur($acteur);
+               }
+
+               // on parcourt la collection Genres
+               foreach ($data->getGenres() as $item) {
+                   // on instancie un objet Genre
+                   $genre = new Genre();
+                   // on lui soumet sa valeur depuis le formulaire
+                   $genre->setType($item->getType());
+                   // on ajoute le genre à l'entité film (pour le many to many)
+                   $film->addGenre($genre);
+               }
+
+               // on va chercher la methode save du repository film pour enregistrement en base de données
+               $filmRepository->save($film, true);
+               // redirection vers la page affichage des films
+               return $this->redirectToRoute('app_film_index', [], Response::HTTP_SEE_OTHER);
+               // dans le cas ou une exception est levée
+           } catch (\Exception $e) {
+               // on affiche un message en haut de la page du formulaire
+               $this->addFlash('error', "le formulaire n'est pas valide");
+           }
+       }
+
+       return $this->render('film/new.html.twig', [
+           'form' => $form,
+       ]);
+   }
+
 
     #[Route('/{id}', name: 'app_film_show', methods: ['GET'])]
     public function show(Film $film): Response
